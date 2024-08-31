@@ -1,26 +1,28 @@
 import fetch from 'node-fetch';
 
 export default async function handler(req, res) {
-  // ... rest of your code ...
-}
-
-export default async function handler(req, res) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method Not Allowed' });
-  }
-
-  const { message } = req.body;
-
-  if (!message) {
-    return res.status(400).json({ error: 'Message is required' });
-  }
-
-  if (!process.env.ANTHROPIC_API_KEY) {
-    console.error('ANTHROPIC_API_KEY is not set');
-    return res.status(500).json({ error: 'Server configuration error' });
-  }
+  console.log('API route invoked');
 
   try {
+    if (req.method !== 'POST') {
+      console.log('Method not allowed:', req.method);
+      return res.status(405).json({ error: 'Method Not Allowed' });
+    }
+
+    const { message } = req.body;
+    console.log('Received message:', message);
+
+    if (!message) {
+      console.log('No message provided');
+      return res.status(400).json({ error: 'Message is required' });
+    }
+
+    if (!process.env.ANTHROPIC_API_KEY) {
+      console.error('ANTHROPIC_API_KEY is not set');
+      return res.status(500).json({ error: 'Server configuration error: API key not set' });
+    }
+
+    console.log('Sending request to Anthropic API');
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
@@ -35,6 +37,8 @@ export default async function handler(req, res) {
       })
     });
 
+    console.log('Anthropic API response status:', response.status);
+
     if (!response.ok) {
       const errorData = await response.text();
       console.error('Anthropic API error:', errorData);
@@ -42,9 +46,14 @@ export default async function handler(req, res) {
     }
 
     const data = await response.json();
+    console.log('Anthropic API response data:', data);
     return res.status(200).json(data);
   } catch (error) {
     console.error('Server error:', error);
-    return res.status(500).json({ error: 'Internal server error', details: error.message });
+    return res.status(500).json({ 
+      error: 'Internal server error', 
+      message: error.message, 
+      stack: error.stack 
+    });
   }
 }
