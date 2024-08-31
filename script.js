@@ -1,6 +1,7 @@
 console.log("Script loaded");
 
-const API_KEY = process.env.NEXT_PUBLIC_ANTHROPIC_API_KEY || ''; // Replace with your actual API key
+// Use this line instead of directly accessing process.env
+const API_KEY = window.ENV_VARS ? window.ENV_VARS.ANTHROPIC_API_KEY : '';
 
 async function sendMessage() {
     console.log("sendMessage function called");
