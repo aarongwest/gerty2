@@ -3,12 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gerty AI Terminal (Light)</title>
+    <title>Gerty AI Terminal</title>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --bg-color: #f5f5f5;
+            --text-color: #333;
+            --input-bg-color: #fff;
+            --ai-text-color: #666666;
+        }
+
+        [data-theme="dark"] {
+            --bg-color: #1e1e1e;
+            --text-color: #f5f5f5;
+            --input-bg-color: #2d2d2d;
+            --ai-text-color: #b0b0b0;
+        }
+
         body {
-            background-color: #f5f5f5;
-            color: #333;
+            background-color: var(--bg-color);
+            color: var(--text-color);
             font-family: 'Fira Code', 'Consolas', 'Monaco', 'Courier New', monospace;
             font-size: 12px;
             margin: 0;
@@ -37,38 +51,77 @@
 
         .prompt {
             margin-right: 5px;
-            color: #000000;
+            color: var(--text-color);
         }
 
         #user-input {
             flex-grow: 1;
-            background-color: transparent;
+            background-color: var(--input-bg-color);
             border: none;
-            color: #000000;
+            color: var(--text-color);
             font-family: inherit;
             font-size: inherit;
             outline: none;
         }
 
         .user-text {
-            color: #000000;
+            color: var(--text-color);
         }
 
         .ai-text {
-            color: #666666;
+            color: var(--ai-text-color);
+        }
+
+        .theme-switch-wrapper {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: flex;
+            align-items: center;
+        }
+        .theme-switch {
+            display: inline-block;
+            height: 34px;
+            position: relative;
+            width: 60px;
+        }
+        .theme-switch input {
+            display:none;
+        }
+        .slider {
+            background-color: #ccc;
+            bottom: 0;
+            cursor: pointer;
+            left: 0;
+            position: absolute;
+            right: 0;
+            top: 0;
+            transition: .4s;
+        }
+        .slider:before {
+            background-color: #fff;
+            bottom: 4px;
+            content: "";
+            height: 26px;
+            left: 4px;
+            position: absolute;
+            transition: .4s;
+            width: 26px;
+        }
+        input:checked + .slider {
+            background-color: #66bb6a;
+        }
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        .slider.round {
+            border-radius: 34px;
+        }
+        .slider.round:before {
+            border-radius: 50%;
         }
     </style>
 </head>
 <body>
-    <div id="terminal">
-        <div id="output">
-            <div class="ai-text">Hello! I'm Gerty, your AI assistant. How can I help you today?</div>
-        </div>
-        <div id="input-line">
-            <span class="prompt">></span>
-            <input type="text" id="user-input" autofocus placeholder="Type your message here...">
-        </div>
-    </div>
-    <script src="script.js"></script>
-</body>
-</html>
+    <div class="theme-switch-wrapper">
+        <label class="theme-switch" for="checkbox">
