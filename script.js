@@ -1,8 +1,5 @@
 console.log("Script loaded");
 
-// Use this line instead of directly accessing process.env
-const API_KEY = window.ENV_VARS ? window.ENV_VARS.ANTHROPIC_API_KEY : '';
-
 async function sendMessage() {
     console.log("sendMessage function called");
     const userInput = document.getElementById('user-input');
@@ -13,23 +10,12 @@ async function sendMessage() {
 
     try {
         console.log("Sending request to API");
-        const response = await fetch('https://api.anthropic.com/v1/messages', {
+        const response = await fetch('/api/anthropic', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'x-api-key': API_KEY,
-                'anthropic-version': '2023-06-01'
             },
-            body: JSON.stringify({
-                model: "claude-3-5-sonnet-20240620",
-                max_tokens: 1000,
-                messages: [
-                    {
-                        role: "user",
-                        content: message
-                    }
-                ]
-            })
+            body: JSON.stringify({ message })
         });
 
         console.log("Response received:", response);
