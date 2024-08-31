@@ -1,6 +1,6 @@
 import fetch from 'node-fetch';
 
-export default async function handler(req, res) {
+async function anthropicHandler(req, res) {
   console.log('API route invoked');
 
   try {
@@ -57,3 +57,5 @@ export default async function handler(req, res) {
     });
   }
 }
+
+export default anthropicHandler;
