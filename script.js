@@ -1,6 +1,6 @@
 console.log("Script loaded");
 
-const API_KEY = process.env.ANTHROPIC_API_KEY; // Replace with your actual API key
+const API_KEY = process.env.NEXT_PUBLIC_ANTHROPIC_API_KEY || ''; // Replace with your actual API key
 
 async function sendMessage() {
     console.log("sendMessage function called");
